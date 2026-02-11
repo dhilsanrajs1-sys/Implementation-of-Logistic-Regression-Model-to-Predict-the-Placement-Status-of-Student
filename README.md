@@ -1,4 +1,4 @@
-# Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student
+<img width="899" height="665" alt="Screenshot 2026-02-11 104555" src="https://github.com/user-attachments/assets/25bd95cd-bdfb-4ee7-9207-bb0d81b97c42" /># Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student
 
 ## AIM:
 To write a program to implement the the Logistic Regression Model to Predict the Placement Status of Student.
@@ -8,22 +8,91 @@ To write a program to implement the the Logistic Regression Model to Predict the
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+1.Load the placement dataset and remove unnecessary columns such as serial number and salary.
+2.Convert all categorical attributes into numerical values using label encoding.
+3.Split the dataset into training and testing sets using train–test split.
+4.Train a Logistic Regression model using the training data.
+5.Predict placement status and evaluate the model using accuracy and confusion matrix.
 
 ## Program:
 ```
 /*
 Program to implement the the Logistic Regression Model to Predict the Placement Status of Student.
-Developed by: 
-RegisterNumber:  
+Developed by: DHILSANRAJ S
+RegisterNumber:212225230058  
 */
 ```
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("Placement_Data.csv")
+print(data.head())
+
+data1 = data.copy()
+
+data1.drop(['sl_no', 'salary'], axis=1, inplace=True)
+
+print("\nMissing values:\n", data1.isnull().sum())
+print("\nDuplicate values:", data1.duplicated().sum())
+
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+data1['gender'] = le.fit_transform(data1['gender'])
+data1['ssc_b'] = le.fit_transform(data1['ssc_b'])
+data1['hsc_b'] = le.fit_transform(data1['hsc_b'])
+data1['hsc_s'] = le.fit_transform(data1['hsc_s'])
+data1['degree_t'] = le.fit_transform(data1['degree_t'])
+data1['workex'] = le.fit_transform(data1['workex'])
+data1['specialisation'] = le.fit_transform(data1['specialisation'])
+data1['status'] = le.fit_transform(data1['status'])
+
+x = data1.iloc[:, :-1]
+y = data1['status']
+
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(
+    x, y, test_size=0.2, random_state=0
+)
+
+from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression(solver='liblinear')
+lr.fit(x_train, y_train)
+
+y_pred = lr.predict(x_test)
+
+from sklearn.metrics import accuracy_score
+print("\nAccuracy:", accuracy_score(y_test, y_pred))
+
+from sklearn.metrics import confusion_matrix
+confusion = confusion_matrix(y_test, y_pred)
+print("\nConfusion Matrix:\n", confusion)
+
+from sklearn.metrics import classification_report
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+from sklearn import metrics
+
+cm_display = metrics.ConfusionMatrixDisplay(
+    confusion_matrix=confusion,
+    display_labels=['Not Placed', 'Placed']
+)
+
+cm_display.plot()
+plt.show()
+```
+
 
 ## Output:
-![the Logistic Regression Model to Predict the Placement Status of Student](sam.png)
+<img width="899" height="665" alt="Screenshot 2026-02-11 104555" src="https://github.com/user-attachments/assets/590d922b-d6c8-4a04-b8f3-af8dc1ec609f" />
+<img width="804" height="349" alt="Screenshot 2026-02-11 104617" src="https://github.com/user-attachments/assets/e1099adf-5ae2-4607-9aa4-e4f7473513dc" />
+<img width="804" height="546" alt="Screenshot 2026-02-11 104631" src="https://github.com/user-attachments/assets/82e6b399-176a-4603-9054-8d12aeb651c5" />
+
+
+
 
 
 ## Result:
